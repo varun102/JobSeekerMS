@@ -26,6 +26,17 @@ public class JobSeekerController {
 	private JobSeekerService service;
 
     
+	public JobSeekerController() {}
+	
+	public JobSeekerController(JobSeekerService service2) {
+		service = service2;
+	}
+
+	@GetMapping("/resume/{id}")
+	public List<Resume> displayResumeDetails(@PathVariable String id){
+		
+		return service.getResumeDetails(id);
+	}
     
     @GetMapping("/education/{id}")
     public List<EducationDetails> displayAllEducationDetailsByResumeId(@PathVariable String id){
@@ -48,14 +59,24 @@ public class JobSeekerController {
     }
     
     
-   
+   @PostMapping("/resume")
+   public ResponseEntity<Object> addResumeDetails( @RequestBody Resume resume) {
+	  	  Resume res =service.addResume(resume);
+	 	 
+	  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
+	  			  .buildAndExpand(res.getResumeId()).toUri();
+	  	   
+	  	  
+	  	  return ResponseEntity.created(uri).build();
+	  	  
+	    }
   
     
     @PostMapping("/education")
     public ResponseEntity<Object> addEducationDetails( @RequestBody EducationDetails education) {
   	  EducationDetails edu =service.addEducation(education);
  	 
-  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
   			  .buildAndExpand(edu.getEduID()).toUri();
   	   
   	  
@@ -65,10 +86,10 @@ public class JobSeekerController {
     
     @PostMapping("/exp")
     public ResponseEntity<Object> addExperienceDetails( @RequestBody ExperienceDetails experience) {
-  	  ExperienceDetails cust =service.addExperience(experience);
+  	  ExperienceDetails exp =service.addExperience(experience);
  	 
-  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-  			  .buildAndExpand(cust.getExpId()).toUri();
+  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
+  			  .buildAndExpand(exp.getExpId()).toUri();
   	   
   	  
   	  return ResponseEntity.created(uri).build();
@@ -77,10 +98,10 @@ public class JobSeekerController {
     
     @PostMapping("/skill")
     public ResponseEntity<Object> addSkillsDetails( @RequestBody Skills skill) {
-  	  Skills cust =service.addSkills(skill);
+  	  Skills skil =service.addSkills(skill);
  	 
-  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-  			  .buildAndExpand(cust.getSkillsId()).toUri();
+  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
+  			  .buildAndExpand(skil.getSkillsId()).toUri();
   	   
   	  
   	  return ResponseEntity.created(uri).build();

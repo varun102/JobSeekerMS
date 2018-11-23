@@ -43,8 +43,15 @@ public class JobSeekerService {
 		eduDao=education;
 	}
 	
+	
+	
 	public List<Resume> getResumeDetails(){
 		return resumeDao.findAll();
+	}
+	
+	public List<Resume> getResumeDetails(String id){
+		
+		return resumeDao.findByseekerId(id);
 	}
 
 	public Resume addResume(Resume resumeBean) {
