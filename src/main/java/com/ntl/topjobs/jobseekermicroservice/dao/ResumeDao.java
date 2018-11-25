@@ -12,6 +12,6 @@ import com.ntl.topjobs.jobseekermicroservice.model.Resume;
 @Repository
 public interface ResumeDao  extends JpaRepository<Resume, String>{
 
-	public List<Resume> findByseekerId(String seekerId);
+	public Resume findByseekerId(String seekerId);
 	
 }

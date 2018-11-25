@@ -1,5 +1,6 @@
 package com.ntl.topjobs.jobseekermicroservice.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +29,32 @@ public class JobSeekerService {
 
 	@Autowired
 	private EducationDao eduDao;
-	
-	public JobSeekerService() {}
+
+	public JobSeekerService() {
+	}
+
 	public JobSeekerService(ResumeDao resume) {
-		resumeDao=resume;
+		resumeDao = resume;
 	}
+
 	public JobSeekerService(SkillsDao skill) {
-		skillsDao=skill;
+		skillsDao = skill;
 	}
+
 	public JobSeekerService(ExperienceDao experience) {
-		expDao=experience;
+		expDao = experience;
 	}
+
 	public JobSeekerService(EducationDao education) {
-		eduDao=education;
+		eduDao = education;
 	}
-	
-	
-	
-	public List<Resume> getResumeDetails(){
+
+	public List<Resume> getResumeDetails() {
 		return resumeDao.findAll();
 	}
-	
-	public List<Resume> getResumeDetails(String id){
-		
+
+	public Resume getResumeDetails(String id) {
+
 		return resumeDao.findByseekerId(id);
 	}
 
@@ -60,57 +64,56 @@ public class JobSeekerService {
 		return resumeDao.save(resumeBean);
 	}
 
-	
-	
-	public List<EducationDetails> getEducationDetails(){
+	public List<EducationDetails> getEducationDetails() {
 		return eduDao.findAll();
-		
+
 	}
 	
-	public List<EducationDetails> getEducationDetailsByResumeId(String resumeId){
-		
+	public List<Resume> getResumes(String arr){
+		String[] arrList=arr.split(",");
+		ArrayList<Resume> resumes=new ArrayList<Resume>();
+		for(String a:arrList) {
+			resumes.add(getResumeDetails(a));
+		}
+		return resumes;
+	}
+
+	public List<EducationDetails> getEducationDetailsByResumeId(String resumeId) {
+
 		return eduDao.findByResumeID(resumeId);
 	}
-	
+
 	public EducationDetails addEducation(EducationDetails education) {
 
 		return eduDao.save(education);
 
 	}
 
-	
-	public List<ExperienceDetails> getExperienceDetails(){
+	public List<ExperienceDetails> getExperienceDetails() {
 		return expDao.findAll();
 	}
-	
-	public List<ExperienceDetails> getExperienceDetails(String id){
+
+	public List<ExperienceDetails> getExperienceDetails(String id) {
 		return expDao.findByresumeId(id);
 	}
-	
-	
+
 	public ExperienceDetails addExperience(ExperienceDetails experience) {
 
 		return expDao.save(experience);
 	}
-	
 
-	public List<Skills> getSkillsDetails(){
+	public List<Skills> getSkillsDetails() {
 		return skillsDao.findAll();
 	}
-	
-	public List<Skills> getSkillsDetails(String resumeId){
+
+	public List<Skills> getSkillsDetails(String resumeId) {
 		return skillsDao.findByresumeId(resumeId);
 	}
-	
+
 	public Skills addSkills(Skills skill) {
 
 		return skillsDao.save(skill);
 	}
-	
-	
-	
-	
-	
 
 	public String generateResumeId() {
 		int x = (int) (Math.random() * ((9999 - 1000) + 1)) + 1000;

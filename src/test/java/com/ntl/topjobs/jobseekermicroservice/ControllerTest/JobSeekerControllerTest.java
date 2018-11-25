@@ -127,7 +127,7 @@ ArrayList<Skills> list = new ArrayList<Skills>();
 		
 		list.add(resume);
 		
-		 Mockito.lenient().when(service.getResumeDetails("RID100")).thenReturn(list);
+		 Mockito.lenient().when(service.getResumeDetails("RID100")).thenReturn(resume);
 		 JobSeekerController controller=new JobSeekerController(service);
 		 assertNotNull(controller.displayResumeDetails("RID100"));
 		
