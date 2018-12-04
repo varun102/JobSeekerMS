@@ -20,11 +20,14 @@ import com.ntl.topjobs.jobseekermicroservice.model.ExperienceDetails;
 import com.ntl.topjobs.jobseekermicroservice.model.Resume;
 import com.ntl.topjobs.jobseekermicroservice.model.Skills;
 import com.ntl.topjobs.jobseekermicroservice.service.JobSeekerService;
+import com.ntl.topjobs.jobseekermicroservice.service.ServiceProxy;
 
 @CrossOrigin(origins="http://localhost:4200",maxAge=3600)
 @RestController
 public class JobSeekerController {
-
+	
+	@Autowired
+	private ServiceProxy proxy;
 	@Autowired
 	private JobSeekerService service;
 
@@ -40,10 +43,12 @@ public class JobSeekerController {
 		
 		return service.getResumeDetails(id);
 	}
-    
+    @GetMapping("/getResumeBySeeker/{seekid}")
+    public Resume getResumeBySeeker(@PathVariable("seekid")String seekid) {
+    	return service.getResumeBySeeker(seekid);
+    }
 	@GetMapping("/resumes/getforjob/{list}")
 	public List<Resume> getResumes(@PathVariable("list") String arr){
-		System.out.println("Here");
 		return service.getResumes(arr);
 	}
 	
@@ -70,7 +75,7 @@ public class JobSeekerController {
     
    @PostMapping("/resume")
    public ResponseEntity<Object> addResumeDetails( @RequestBody Resume resume) {
-	   		System.out.println("here");
+
 	  	  Resume res =service.addResume(resume);
 	 	 
 	  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
@@ -115,6 +120,23 @@ public class JobSeekerController {
   	   
   	  
   	  return ResponseEntity.created(uri).build();
-}
+    }
     
+    @GetMapping("/getJobs")
+    public List getAllJobs( ){
+    	return proxy.getAllJobs();
+    }
+    
+    @GetMapping("/applyForJob/{jobId}/{seekerId}")
+    public boolean applyForJob(@PathVariable("jobId")String jobId,@PathVariable("seekerId")String seekerid) {
+    	System.out.println("<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
+    	//String resumeId= proxy.getSeeker(seekerid);
+    	String resumeId=service.getResumeIdBySeekerId(seekerid);
+    	//resumeId
+    	System.out.println(resumeId);
+    	return proxy.applyForJob(resumeId,jobId);
+        	
+    }
+    
+    //@GetMapping("/applyForJob/{resumeId}")
 }    

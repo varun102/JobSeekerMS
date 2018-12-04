@@ -15,6 +15,7 @@ public class Resume {
 	private String contact;
 	private String gender;
 	private LocalDate dob;
+	private String seekerId;
 	/**
 	 * @return the name
 	 */
@@ -75,9 +76,6 @@ public class Resume {
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
-	private String seekerId;
-	
-	
 	
 	
 	/**

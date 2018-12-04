@@ -80,7 +80,7 @@ public class JobSeekerServiceTest {
 		
 		list.add(resume);
 		
-		 Mockito.lenient().when(resumedb.findAll()).thenReturn(list);
+		 //Mockito.lenient().when(resumedb.findAll()).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(resumedb);
 		 
 		 assertEquals(1,sc.getResumeDetails().size());
@@ -100,7 +100,7 @@ public class JobSeekerServiceTest {
 		resume.setName("NRJ");
 		resume.setSeekerId("SEK100");
 		
-		Mockito.lenient().when(resumedb.save(resume)).thenReturn(resume);
+		//Mockito.lenient().when(resumedb.save(resume)).thenReturn(resume);
 		
 		JobSeekerService seekerService = new JobSeekerService(resumedb);
 		
@@ -125,7 +125,7 @@ public class JobSeekerServiceTest {
 		
 		list.add(education);
 		
-		 Mockito.lenient().when(educationdb.findAll()).thenReturn(list);
+		 //Mockito.lenient().when(educationdb.findAll()).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(educationdb);
 		 
 		 assertEquals(1,sc.getEducationDetails().size());
@@ -148,7 +148,7 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		
 		list.add(education);
 		
-		 Mockito.lenient().when(educationdb.findByResumeID("RID100")).thenReturn(list);
+		 //Mockito.lenient().when(educationdb.findByResumeID("RID100")).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(educationdb);
 		 
 		 assertEquals(1,sc.getEducationDetailsByResumeId("RID100").size());
@@ -167,7 +167,7 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		education.setResumeID("RID123");
 		education.setScore("90%");
 		
-Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
+		//Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 		
 		JobSeekerService seekerService = new JobSeekerService(educationdb);
 		
@@ -190,7 +190,7 @@ Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 	
 		list.add(experience);
 		
-		Mockito.lenient().when(expdb.findAll()).thenReturn(list);
+		//Mockito.lenient().when(expdb.findAll()).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(expdb);
 		 
 		 assertEquals(1,sc.getExperienceDetails().size());
@@ -209,7 +209,7 @@ Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 		
         list.add(experience);
 		
-		Mockito.lenient().when(expdb.findByresumeId("RID100")).thenReturn(list);
+		//Mockito.lenient().when(expdb.findByresumeId("RID100")).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(expdb);
 		 
 		 assertEquals(1,sc.getExperienceDetails("RID100").size());
@@ -228,7 +228,7 @@ Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 		experience.setPosition("Designer");
 		experience.setResumeId("RID100");
 		
-        Mockito.lenient().when(expdb.save(experience)).thenReturn(experience);
+        //Mockito.lenient().when(expdb.save(experience)).thenReturn(experience);
 		
 		JobSeekerService seekerService = new JobSeekerService(expdb);
 		
@@ -247,7 +247,7 @@ Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 		
         list.add(skill);
 		
-		Mockito.lenient().when(skilldb.findAll()).thenReturn(list);
+		//Mockito.lenient().when(skilldb.findAll()).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(skilldb);
 		 
 		 assertEquals(1,sc.getSkillsDetails().size());
@@ -264,7 +264,7 @@ Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 		
         list.add(skill);
 		
-		Mockito.lenient().when(skilldb.findByresumeId("RID100")).thenReturn(list);
+		//Mockito.lenient().when(skilldb.findByresumeId("RID100")).thenReturn(list);
 		 JobSeekerService sc=new JobSeekerService(skilldb);
 		 
 		 assertEquals(1,sc.getSkillsDetails("RID100").size());
@@ -278,7 +278,7 @@ Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
 		skill.setSkills("XYZ");
 		skill.setSkillsId((long)1);
 
-		Mockito.lenient().when(skilldb.save(skill)).thenReturn(skill);
+		//Mockito.lenient().when(skilldb.save(skill)).thenReturn(skill);
        JobSeekerService seekerService = new JobSeekerService(skilldb);
 	   assertEquals(skill, seekerService.addSkills(skill));
 		

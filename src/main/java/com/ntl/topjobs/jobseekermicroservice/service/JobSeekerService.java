@@ -55,12 +55,16 @@ public class JobSeekerService {
 
 	public Resume getResumeDetails(String id) {
 
+		//return resumeDao.findByseekerId(id);
+		return resumeDao.findById(id).get();
+	}
+	public Resume getResumeBySeeker(String id) {
 		return resumeDao.findByseekerId(id);
 	}
 
 	public Resume addResume(Resume resumeBean) {
 		String resumeId = generateResumeId();
-		resumeBean.setResumeId(resumeId);
+			resumeBean.setResumeId(resumeId);
 		return resumeDao.save(resumeBean);
 	}
 
@@ -71,9 +75,11 @@ public class JobSeekerService {
 	
 	public List<Resume> getResumes(String arr){
 		String[] arrList=arr.split(",");
+		System.out.println(arrList);
 		ArrayList<Resume> resumes=new ArrayList<Resume>();
 		for(String a:arrList) {
-			resumes.add(getResumeDetails(a));
+			System.out.println(a);
+			resumes.add(resumeDao.findById(a).get());
 		}
 		return resumes;
 	}
@@ -114,7 +120,13 @@ public class JobSeekerService {
 
 		return skillsDao.save(skill);
 	}
-
+	
+	public String getResumeIdBySeekerId(String seekerId) {
+		Resume resume=resumeDao.findByseekerId(seekerId);
+		return resume.getResumeId();
+		
+	}
+	
 	public String generateResumeId() {
 		int x = (int) (Math.random() * ((9999 - 1000) + 1)) + 1000;
 		String str = Integer.toString(x);
