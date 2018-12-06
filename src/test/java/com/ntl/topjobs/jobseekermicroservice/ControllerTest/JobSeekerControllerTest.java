@@ -10,7 +10,19 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import org.springframework.test.web.servlet.RequestBuilder;
 
 import com.ntl.topjobs.jobseekermicroservice.controller.JobSeekerController;
 import com.ntl.topjobs.jobseekermicroservice.dao.EducationDao;
@@ -29,7 +41,10 @@ public class JobSeekerControllerTest {
 	@Mock
 	JobSeekerService service;
 	
-	
+	@Autowired
+	private MockMvc mockMvc;
+
+
 	
 	
 	@Mock
@@ -49,16 +64,20 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 EducationDetails education = new EducationDetails();
 		education.setBoard("CBSE");
 		education.setDegree("Xth");
-		education.setEduID((long) 1);
+		education.setEduId((long) 1);
 		education.setEnddate(LocalDate.of(2012, 06, 12));
 		education.setStartdate(LocalDate.of(2010, 04, 21));
 		education.setInstitution("VMG");
-		education.setResumeID("RID123");
+		education.setResumeId("RID123");
 		education.setScore("90%");
 		
 		list.add(education);
 		
+
+		 Mockito.lenient().when(service.getEducationDetailsByResumeId("RID123")).thenReturn(list);
+
 		//when(service.getEducationDetailsByResumeId("RID123")).thenReturn(list);
+
 		 
 		 JobSeekerController controller=new JobSeekerController(service);
 		 assertEquals(1,controller.displayAllEducationDetailsByResumeId("RID123").size());
@@ -83,10 +102,13 @@ ArrayList<ExperienceDetails> list = new ArrayList<ExperienceDetails>();
 	
 		list.add(experience);
 		
-		//when(service.getExperienceDetails("RID100")).thenReturn(list);
+
+		Mockito.lenient().when(service.getExperienceDetails("RID100")).thenReturn(list);
 		 JobSeekerController controller=new JobSeekerController(service);
 		 
-		 assertEquals(1,controller.displayAllExperienceDetailsByResumeId("RID100").size());
+		 assertEquals("",1,controller.displayAllExperienceDetailsByResumeId("RID100").size());
+
+		
 		
 	}
 
@@ -102,10 +124,11 @@ ArrayList<Skills> list = new ArrayList<Skills>();
 		
         list.add(skill);
 		
-		//Mockito.lenient().when(service.getSkillsDetails("RID100")).thenReturn(list);
+		Mockito.lenient().when(service.getSkillsDetails("RID100")).thenReturn(list);
 		 JobSeekerController sc=new JobSeekerController(service);
 		 
-		 assertEquals(1,sc.displayAllSkillsDetailsByResumeId("RID100").size());
+		 assertEquals("",1,sc.displayAllSkillsDetailsByResumeId("RID100").size());
+
 		
 		
 	}
@@ -127,10 +150,47 @@ ArrayList<Skills> list = new ArrayList<Skills>();
 		
 		list.add(resume);
 		
-		 //Mockito.lenient().when(service.getResumeDetails("RID100")).thenReturn(resume);
+
+		 Mockito.lenient().when(service.getResumeDetails("RID100")).thenReturn(resume);
 		 JobSeekerController controller=new JobSeekerController(service);
-		 assertNotNull(controller.displayResumeDetails("RID100"));
+		 assertNotNull("testing controller",controller.displayResumeDetails("RID100"));
+
 		
+		
+		
+	}
+
+
+	@Test
+	public void testAddEducationDetails() throws Exception {
+		
+    String  educationJson = "{\"eduID\":\"6\",\"resumeID\":\"RID123\",\"degree\":\"Xth\",\"score\":\"80%\",\"institution\":\"IIN\",\"startdate\":\"2015-10-28\",\"enddate\":\"2018-12-20\",\"board\":\"CBSE\"}";
+		
+		EducationDetails education = new EducationDetails();
+		education.setBoard("CBSE");
+		education.setDegree("Xth");
+		education.setEduId((long) 1);
+		education.setEnddate(LocalDate.of(2012, 06, 12));
+		education.setStartdate(LocalDate.of(2010, 04, 21));
+		education.setInstitution("VMG");
+		education.setResumeId("RID123");
+		education.setScore("90%");
+		
+		 Mockito.lenient().when(service.addEducation(Mockito.any(EducationDetails.class))).thenReturn(education);
+		 
+		 RequestBuilder requestBuilder = MockMvcRequestBuilders
+					.post("/education")
+					.accept(MediaType.APPLICATION_JSON).content(educationJson)
+					.contentType(MediaType.APPLICATION_JSON);
+		 
+		 MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+			MockHttpServletResponse response = result.getResponse();
+
+			assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+			assertEquals("http://localhost/education",
+					response.getHeader(HttpHeaders.LOCATION));
+		 
 		
 		
 	}
@@ -155,6 +215,7 @@ ArrayList<Skills> list = new ArrayList<Skills>();
 //
 //		
 //	}
+
 
 	@Test
 	public void testAddExperienceDetails() {

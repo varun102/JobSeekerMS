@@ -1,15 +1,19 @@
 package com.ntl.topjobs.jobseekermicroservice.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import com.ntl.topjobs.jobseekermicroservice.dao.EducationDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.ExperienceDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.ResumeDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.SkillsDao;
+import com.ntl.topjobs.jobseekermicroservice.exceptions.ExperienceDetailsNotFoundException;
 import com.ntl.topjobs.jobseekermicroservice.model.EducationDetails;
 import com.ntl.topjobs.jobseekermicroservice.model.ExperienceDetails;
 import com.ntl.topjobs.jobseekermicroservice.model.Resume;
@@ -31,6 +35,8 @@ public class JobSeekerService {
 	private EducationDao eduDao;
 
 	public JobSeekerService() {
+		super();
+
 	}
 
 	public JobSeekerService(ResumeDao resume) {
@@ -53,6 +59,18 @@ public class JobSeekerService {
 		return resumeDao.findAll();
 	}
 
+	
+//	public Resume getResumeDetails(String id) {
+//               updateViews(id);
+//         Optional<Resume> optional = resumeDao.findById(id);    
+//         if(!optional.isPresent()) {
+//        	 throw new ResumeNotFoundException(id);
+//         }
+//               
+//		return optional.get();
+//	}
+
+	
 	public Resume getResumeDetails(String id) {
 
 		//return resumeDao.findByseekerId(id);
@@ -62,13 +80,14 @@ public class JobSeekerService {
 			return null;
 		}
 	}
-	public Resume getResumeBySeeker(String id) {
+	public Resume getResumeBySeeker(String id)throws SQLException {
 		return resumeDao.findByseekerId(id);
 	}
 
 	public Resume addResume(Resume resumeBean) {
 		String resumeId = generateResumeId();
 			resumeBean.setResumeId(resumeId);
+
 		return resumeDao.save(resumeBean);
 	}
 
@@ -78,6 +97,7 @@ public class JobSeekerService {
 	}
 	
 	public List<Resume> getResumes(String arr){
+
 		ArrayList<Resume> resumes=new ArrayList<Resume>();
 
 		try {
@@ -98,7 +118,7 @@ public class JobSeekerService {
 
 	public List<EducationDetails> getEducationDetailsByResumeId(String resumeId) {
 
-		return eduDao.findByResumeID(resumeId);
+		return eduDao.findByResumeId(resumeId);
 	}
 
 	public EducationDetails addEducation(EducationDetails education) {
@@ -132,6 +152,7 @@ public class JobSeekerService {
 
 		return skillsDao.save(skill);
 	}
+
 	
 	public String getResumeIdBySeekerId(String seekerId) {
 		Resume resume=resumeDao.findByseekerId(seekerId);
@@ -145,5 +166,31 @@ public class JobSeekerService {
 		char a[] = { str.charAt(0), str.charAt(1), str.charAt(2), str.charAt(3) };
 		return (new String(a));
 	}
+
+
+	public int updateViews(String id)
+	{
+		return resumeDao.increaseViewCount(id);
+	}
+//	public int updateViews(String id) {
+//		
+//		 Optional<Resume> optional = resumeDao.findById(id);
+//		 if (!optional.isPresent())
+//				{throw new ResumeNotFoundException("id-" + id);
+//	            }
+//			return resumeDao.increaseViewCount(id);
+//		}
+
+	public ExperienceDetails removeExperienceDetails(long id) {
+		
+		Optional<ExperienceDetails> optional = expDao.findById(id);
+		if(!optional.isPresent()) {
+			throw new ExperienceDetailsNotFoundException("id-"+id);
+		}
+		
+		expDao.deleteById(id);
+		return optional.get();
+	}
+
 
 }

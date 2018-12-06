@@ -41,6 +41,7 @@ public class JobSeekerServiceTest {
 	@Mock
 	SkillsDao skilldb;
 	
+
 	Resume resume = new Resume();
 	EducationDetails education = new EducationDetails();
 	ExperienceDetails experience = new ExperienceDetails();
@@ -80,7 +81,9 @@ public class JobSeekerServiceTest {
 		
 		list.add(resume);
 		
-		 //Mockito.lenient().when(resumedb.findAll()).thenReturn(list);
+
+		 Mockito.lenient().when(resumedb.findAll()).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(resumedb);
 		 
 		 assertEquals(1,sc.getResumeDetails().size());
@@ -100,7 +103,11 @@ public class JobSeekerServiceTest {
 		resume.setName("NRJ");
 		resume.setSeekerId("SEK100");
 		
+
+		Mockito.lenient().when(resumedb.save(resume)).thenReturn(resume);
+
 		//Mockito.lenient().when(resumedb.save(resume)).thenReturn(resume);
+
 		
 		JobSeekerService seekerService = new JobSeekerService(resumedb);
 		
@@ -116,16 +123,20 @@ public class JobSeekerServiceTest {
 		
 		education.setBoard("CBSE");
 		education.setDegree("Xth");
-		education.setEduID((long) 1);
+		education.setEduId((long) 1);
 		education.setEnddate(LocalDate.of(2012, 06, 12));
 		education.setStartdate(LocalDate.of(2010, 04, 21));
 		education.setInstitution("VMG");
-		education.setResumeID("RID123");
+		education.setResumeId("RID123");
 		education.setScore("90%");
 		
 		list.add(education);
 		
+
+		 Mockito.lenient().when(educationdb.findAll()).thenReturn(list);
+
 		 //Mockito.lenient().when(educationdb.findAll()).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(educationdb);
 		 
 		 assertEquals(1,sc.getEducationDetails().size());
@@ -139,16 +150,20 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		
 		education.setBoard("CBSE");
 		education.setDegree("Xth");
-		education.setEduID((long) 1);
+		education.setEduId((long) 1);
 		education.setEnddate(LocalDate.of(2012, 06, 12));
 		education.setStartdate(LocalDate.of(2010, 04, 21));
 		education.setInstitution("VMG");
-		education.setResumeID("RID100");
+		education.setResumeId("RID100");
 		education.setScore("90%");
 		
 		list.add(education);
 		
+
+		 Mockito.lenient().when(educationdb.findByResumeId("RID100")).thenReturn(list);
+
 		 //Mockito.lenient().when(educationdb.findByResumeID("RID100")).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(educationdb);
 		 
 		 assertEquals(1,sc.getEducationDetailsByResumeId("RID100").size());
@@ -160,14 +175,18 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		
 		education.setBoard("CBSE");
 		education.setDegree("Xth");
-		education.setEduID((long) 1);
+		education.setEduId((long) 1);
 		education.setEnddate(LocalDate.of(2012, 06, 12));
 		education.setStartdate(LocalDate.of(2010, 04, 21));
 		education.setInstitution("VMG");
-		education.setResumeID("RID123");
+		education.setResumeId("RID123");
 		education.setScore("90%");
 		
+
+        Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
+
 		//Mockito.lenient().when(educationdb.save(education)).thenReturn(education);
+
 		
 		JobSeekerService seekerService = new JobSeekerService(educationdb);
 		
@@ -190,7 +209,11 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 	
 		list.add(experience);
 		
+
+		Mockito.lenient().when(expdb.findAll()).thenReturn(list);
+
 		//Mockito.lenient().when(expdb.findAll()).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(expdb);
 		 
 		 assertEquals(1,sc.getExperienceDetails().size());
@@ -209,7 +232,11 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		
         list.add(experience);
 		
+
+		Mockito.lenient().when(expdb.findByresumeId("RID100")).thenReturn(list);
+
 		//Mockito.lenient().when(expdb.findByresumeId("RID100")).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(expdb);
 		 
 		 assertEquals(1,sc.getExperienceDetails("RID100").size());
@@ -228,7 +255,11 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		experience.setPosition("Designer");
 		experience.setResumeId("RID100");
 		
+
+        Mockito.lenient().when(expdb.save(experience)).thenReturn(experience);
+
         //Mockito.lenient().when(expdb.save(experience)).thenReturn(experience);
+
 		
 		JobSeekerService seekerService = new JobSeekerService(expdb);
 		
@@ -247,7 +278,11 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		
         list.add(skill);
 		
+
+		Mockito.lenient().when(skilldb.findAll()).thenReturn(list);
+
 		//Mockito.lenient().when(skilldb.findAll()).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(skilldb);
 		 
 		 assertEquals(1,sc.getSkillsDetails().size());
@@ -264,7 +299,11 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		
         list.add(skill);
 		
+
+		Mockito.lenient().when(skilldb.findByresumeId("RID100")).thenReturn(list);
+
 		//Mockito.lenient().when(skilldb.findByresumeId("RID100")).thenReturn(list);
+
 		 JobSeekerService sc=new JobSeekerService(skilldb);
 		 
 		 assertEquals(1,sc.getSkillsDetails("RID100").size());
@@ -278,7 +317,11 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		skill.setSkills("XYZ");
 		skill.setSkillsId((long)1);
 
+
+		Mockito.lenient().when(skilldb.save(skill)).thenReturn(skill);
+
 		//Mockito.lenient().when(skilldb.save(skill)).thenReturn(skill);
+
        JobSeekerService seekerService = new JobSeekerService(skilldb);
 	   assertEquals(skill, seekerService.addSkills(skill));
 		
@@ -290,9 +333,56 @@ ArrayList<EducationDetails> list = new ArrayList<EducationDetails>();
 		JobSeekerService seekerService = new JobSeekerService();
 		assertNotNull(seekerService.generateResumeId());
 		
+
+		}
+	
+	@Test
+	public void testupdateViews() {
+		resume.setResumeId("RID100");
+		resume.setContact("2018-10-12");
+		resume.setDob(LocalDate.of(1996,10,10));
+		resume.setEmail("abc@123");
+		resume.setGender("Male");
+		resume.setName("NRJ");
+		resume.setNoOfViews(0);
+		resume.setSeekerId("SEK100");
+		
+	
+		Mockito.lenient().when(resumedb.increaseViewCount("RID100")).thenReturn(1);
+		JobSeekerService seekerService = new JobSeekerService(resumedb);
+		assertEquals(1,seekerService.updateViews(resume.getResumeId()));
+		
+	}
+	
+//	@Test
+//	public void testgetResumes() {
+//		
+//ArrayList<Resume> list = new ArrayList<Resume>();
+//		
+//		resume.setResumeId("RID100");
+//		resume.setContact("2018-10-12");
+//		resume.setDob(LocalDate.of(1996,10,10));
+//		resume.setEmail("abc@123");
+//		resume.setGender("Male");
+//		resume.setName("NRJ");
+//		resume.setSeekerId("SEK100");
+//		
+//	    
+//		list.add(resume);
+//		String str="RID100";
+//		
+//		 Mockito.lenient().when(resumedb.findById("RID100")).thenReturn(resume);
+//		 JobSeekerService sc=new JobSeekerService(resumedb);
+//		 Mockito.lenient().when(sc.getResumeDetails("RID100")).thenReturn(resume);
+//		 assertEquals(1,sc.getResumes(str).size());
+//		
+//		
+//	}
+
 		
 		
 		
 	}
 
-}
+
+

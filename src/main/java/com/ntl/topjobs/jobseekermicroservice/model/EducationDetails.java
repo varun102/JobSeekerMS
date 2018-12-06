@@ -11,19 +11,14 @@ import javax.persistence.Id;
 public class EducationDetails {
 	
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long eduID;
-	private String resumeID;
+	private long eduId;
+	private String resumeId;
 	private String degree;
 	private String score;
 	private String institution;
 	private LocalDate startdate;
 	private LocalDate enddate;
 	private String board;
-	
-	
-	
-	
-	
 	/**
 	 * 
 	 */
@@ -31,28 +26,50 @@ public class EducationDetails {
 		super();
 	}
 	/**
-	 * @return the eduID
+	 * @param eduId
+	 * @param resumeId
+	 * @param degree
+	 * @param score
+	 * @param institution
+	 * @param startdate
+	 * @param enddate
+	 * @param board
 	 */
-	public Long getEduID() {
-		return eduID;
+	public EducationDetails(long eduId, String resumeId, String degree, String score, String institution,
+			LocalDate startdate, LocalDate enddate, String board) {
+		super();
+		this.eduId = eduId;
+		this.resumeId = resumeId;
+		this.degree = degree;
+		this.score = score;
+		this.institution = institution;
+		this.startdate = startdate;
+		this.enddate = enddate;
+		this.board = board;
 	}
 	/**
-	 * @param eduID the eduID to set
+	 * @return the eduId
 	 */
-	public void setEduID(Long eduID) {
-		this.eduID = eduID;
+	public long getEduId() {
+		return eduId;
 	}
 	/**
-	 * @return the resumeID
+	 * @param eduId the eduId to set
 	 */
-	public String getResumeID() {
-		return resumeID;
+	public void setEduId(long eduId) {
+		this.eduId = eduId;
 	}
 	/**
-	 * @param resumeID the resumeID to set
+	 * @return the resumeId
 	 */
-	public void setResumeID(String resumeID) {
-		resumeID = resumeID;
+	public String getResumeId() {
+		return resumeId;
+	}
+	/**
+	 * @param resumeId the resumeId to set
+	 */
+	public void setResumeId(String resumeId) {
+		this.resumeId = resumeId;
 	}
 	/**
 	 * @return the degree
@@ -128,7 +145,6 @@ public class EducationDetails {
 	}
 	
 	
-
+	
+	
 }
-
-
