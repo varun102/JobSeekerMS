@@ -122,10 +122,10 @@ public class JobSeekerController {
   	  return ResponseEntity.created(uri).build();
     }
     
-    @GetMapping("/getJobs")
-    public List getAllJobs( ){
-    	return proxy.getAllJobs();
-    }
+	    @GetMapping("/getJobs")
+	    public List getAllJobs( ){
+	    	return proxy.getAllJobs();
+	    }
     
     @GetMapping("/applyForJob/{jobId}/{seekerId}")
     public boolean applyForJob(@PathVariable("jobId")String jobId,@PathVariable("seekerId")String seekerid) {
