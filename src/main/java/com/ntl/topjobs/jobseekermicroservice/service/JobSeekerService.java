@@ -1,5 +1,6 @@
 package com.ntl.topjobs.jobseekermicroservice.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,7 @@ import com.ntl.topjobs.jobseekermicroservice.dao.EducationDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.ExperienceDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.ResumeDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.SkillsDao;
-import com.ntl.topjobs.jobseekermicroservice.exceptions.ResumeNotFoundException;
+import com.ntl.topjobs.jobseekermicroservice.exceptions.ExperienceDetailsNotFoundException;
 import com.ntl.topjobs.jobseekermicroservice.model.EducationDetails;
 import com.ntl.topjobs.jobseekermicroservice.model.ExperienceDetails;
 import com.ntl.topjobs.jobseekermicroservice.model.Resume;
@@ -35,6 +36,7 @@ public class JobSeekerService {
 
 	public JobSeekerService() {
 		super();
+
 	}
 
 	public JobSeekerService(ResumeDao resume) {
@@ -57,10 +59,6 @@ public class JobSeekerService {
 		return resumeDao.findAll();
 	}
 
-	public Resume getResumeDetails(String id)
-	{
-		return resumeDao.findById(id).get();
-	}
 	
 //	public Resume getResumeDetails(String id) {
 //               updateViews(id);
@@ -72,9 +70,20 @@ public class JobSeekerService {
 //		return optional.get();
 //	}
 
+	
+	public Resume getResumeDetails(String id) {
+
+		//return resumeDao.findByseekerId(id);
+		return resumeDao.findById(id).get();
+	}
+	public Resume getResumeBySeeker(String id)throws SQLException {
+		return resumeDao.findByseekerId(id);
+	}
+
 	public Resume addResume(Resume resumeBean) {
 		String resumeId = generateResumeId();
-		resumeBean.setResumeId(resumeId);
+			resumeBean.setResumeId(resumeId);
+
 		return resumeDao.save(resumeBean);
 	}
 
@@ -85,16 +94,21 @@ public class JobSeekerService {
 	
 	public List<Resume> getResumes(String arr){
 		String[] arrList=arr.split(",");
-		ArrayList<Resume> resumes=new ArrayList<>();
+
+		
+
+		System.out.println(arrList);
+		ArrayList<Resume> resumes=new ArrayList<Resume>();
 		for(String a:arrList) {
-			resumes.add(getResumeDetails(a));
+			System.out.println(a);
+			resumes.add(resumeDao.findById(a).get());
 		}
 		return resumes;
 	}
 
 	public List<EducationDetails> getEducationDetailsByResumeId(String resumeId) {
 
-		return eduDao.findByResumeID(resumeId);
+		return eduDao.findByResumeId(resumeId);
 	}
 
 	public EducationDetails addEducation(EducationDetails education) {
@@ -129,12 +143,20 @@ public class JobSeekerService {
 		return skillsDao.save(skill);
 	}
 
+	
+	public String getResumeIdBySeekerId(String seekerId) {
+		Resume resume=resumeDao.findByseekerId(seekerId);
+		return resume.getResumeId();
+		
+	}
+	
 	public String generateResumeId() {
 		int x = (int) (Math.random() * ((9999 - 1000) + 1)) + 1000;
 		String str = Integer.toString(x);
 		char a[] = { str.charAt(0), str.charAt(1), str.charAt(2), str.charAt(3) };
 		return (new String(a));
 	}
+
 
 	public int updateViews(String id)
 	{
@@ -148,5 +170,17 @@ public class JobSeekerService {
 //	            }
 //			return resumeDao.increaseViewCount(id);
 //		}
+
+	public ExperienceDetails removeExperienceDetails(long id) {
+		
+		Optional<ExperienceDetails> optional = expDao.findById(id);
+		if(!optional.isPresent()) {
+			throw new ExperienceDetailsNotFoundException("id-"+id);
+		}
+		
+		expDao.deleteById(id);
+		return optional.get();
+	}
+
 
 }

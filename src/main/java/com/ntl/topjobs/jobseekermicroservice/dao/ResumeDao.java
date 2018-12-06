@@ -19,9 +19,11 @@ public interface ResumeDao  extends JpaRepository<Resume, String>{
 
 	public Resume findByseekerId(String seekerId);
 
+
 	@Transactional
     @Modifying(flushAutomatically = true,clearAutomatically = true)
     @Query("UPDATE Resume  SET noOfViews=noOfViews+1  WHERE resumeId = :resumeid")
      public int increaseViewCount(@Param("resumeid") String resumeid);
+
 	
 }

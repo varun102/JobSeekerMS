@@ -8,18 +8,16 @@ import javax.persistence.Id;
 @Entity
 public class ExperienceDetails {
 	
+
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long expId;
+    private Long expId;
 	private String resumeId;
 	private String companyName;
 	private String noOfYears;
 	private String position;
 	private String description;
 	
-	
-	
-	
-	
+
 	/**
 	 * 
 	 */

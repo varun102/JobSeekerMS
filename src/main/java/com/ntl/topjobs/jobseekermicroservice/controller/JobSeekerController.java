@@ -1,12 +1,13 @@
 package com.ntl.topjobs.jobseekermicroservice.controller;
 
 import java.net.URI;
-
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +22,18 @@ import com.ntl.topjobs.jobseekermicroservice.model.Resume;
 import com.ntl.topjobs.jobseekermicroservice.model.Skills;
 import com.ntl.topjobs.jobseekermicroservice.service.JobSeekerService;
 
+import com.ntl.topjobs.jobseekermicroservice.service.ServiceProxy;
+
+import jdk.jfr.internal.Logger;
+
+
 @CrossOrigin(origins="http://localhost:4200",maxAge=3600)
 @RestController
 public class JobSeekerController {
+
+	
+	@Autowired
+	private ServiceProxy proxy;
 
 	@Autowired
 	private JobSeekerService service;
@@ -37,19 +47,33 @@ public class JobSeekerController {
 
 	@GetMapping("/resume/{id}")
 	public Resume displayResumeDetails(@PathVariable String id){
+
 		      
  		return service.getResumeDetails(id);
 	}
     
+	
+    @GetMapping("/getResumeBySeeker/{seekid}")
+    public Resume getResumeBySeeker(@PathVariable("seekid")String seekid) {
+    	Resume resobj=null;
+    	try {
+			resobj=service.getResumeBySeeker(seekid);
+		} catch (SQLException e) {
+		System.out.println("Error thrown");
+			
+		}
+    	return resobj;
+    }
+    
 	@GetMapping("/resumes/getforjob/{list}")
 	public List<Resume> getResumes(@PathVariable("list") String arr){
-		
+
 		return service.getResumes(arr);
 	}
 	
     @GetMapping("/education/{id}")
     public List<EducationDetails> displayAllEducationDetailsByResumeId(@PathVariable String id){
-    	
+    	System.out.println(id);
     	return service.getEducationDetailsByResumeId(id);
     }
     
@@ -70,7 +94,7 @@ public class JobSeekerController {
     
    @PostMapping("/resume")
    public ResponseEntity<Object> addResumeDetails( @RequestBody Resume resume) {
-	   		
+
 	  	  Resume res =service.addResume(resume);
 	 	 
 	  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
@@ -84,10 +108,11 @@ public class JobSeekerController {
     
     @PostMapping("/education")
     public ResponseEntity<Object> addEducationDetails( @RequestBody EducationDetails education) {
+    	System.out.println(education.getResumeId()+"my resume id is");
   	  EducationDetails edu =service.addEducation(education);
  	 
   	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
-  			  .buildAndExpand(edu.getEduID()).toUri();
+  			  .buildAndExpand(edu.getEduId()).toUri();
   	   
   	  
   	  return ResponseEntity.created(uri).build();
@@ -115,6 +140,31 @@ public class JobSeekerController {
   	   
   	  
   	  return ResponseEntity.created(uri).build();
-}
+
+    }
     
+    @GetMapping("/getJobs")
+    public List getAllJobs( ){
+    	return proxy.getAllJobs();
+    }
+    
+    @GetMapping("/applyForJob/{jobId}/{seekerId}")
+    public boolean applyForJob(@PathVariable("jobId")String jobId,@PathVariable("seekerId")String seekerid) {
+    	System.out.println("<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>");
+    	//String resumeId= proxy.getSeeker(seekerid);
+    	String resumeId=service.getResumeIdBySeekerId(seekerid);
+    	//resumeId
+    	System.out.println(resumeId);
+    	return proxy.applyForJob(resumeId,jobId);
+        	
+    }
+    
+    @DeleteMapping("/exp/{id}")
+    public ExperienceDetails deleteExperienceDetails(@PathVariable("id") int id) {
+    	
+    	return service.removeExperienceDetails(id);
+    }
+    
+    //@GetMapping("/applyForJob/{resumeId}")
+
 }    

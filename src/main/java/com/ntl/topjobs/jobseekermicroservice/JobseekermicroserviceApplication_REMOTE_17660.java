@@ -8,9 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-
 @EnableFeignClients("com.ntl.topjobs.jobseekermicroservice")
-
 public class JobseekermicroserviceApplication {
 
 	public static void main(String[] args) {

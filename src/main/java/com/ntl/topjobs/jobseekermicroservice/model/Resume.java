@@ -15,6 +15,7 @@ public class Resume {
 	private String contact;
 	private String gender;
 	private LocalDate dob;
+	private String seekerId;
 	private int noOfViews;
 	/**
 	 * @return the noOfViews
@@ -28,6 +29,8 @@ public class Resume {
 	public void setNoOfViews(int noOfViews) {
 		this.noOfViews = noOfViews;
 	}
+
+
 	/**
 	 * @return the name
 	 */
@@ -88,9 +91,11 @@ public class Resume {
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
-	private String seekerId;
+
 	
 	
+	
+
 	
 	
 	/**

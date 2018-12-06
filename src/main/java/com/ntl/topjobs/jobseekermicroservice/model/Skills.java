@@ -13,10 +13,7 @@ public class Skills {
 	private String resumeId;
 	private String skill;
 	
-	
-	
-	
-	
+
 	/**
 	 * 
 	 */

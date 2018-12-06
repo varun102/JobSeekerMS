@@ -10,5 +10,5 @@ import com.ntl.topjobs.jobseekermicroservice.model.EducationDetails;
 @Repository
 public interface EducationDao extends JpaRepository<EducationDetails,String>{
 
-	public List<EducationDetails> findByResumeID(String resumeId);
+	public List<EducationDetails> findByResumeId(String resumeId);
 }
