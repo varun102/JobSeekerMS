@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -107,15 +108,12 @@ public class JobSeekerController {
   
     
     @PostMapping("/education")
-    public ResponseEntity<Object> addEducationDetails( @RequestBody EducationDetails education) {
+    public EducationDetails addEducationDetails( @RequestBody EducationDetails education) {
     	System.out.println(education.getResumeId()+"my resume id is");
-  	  EducationDetails edu =service.addEducation(education);
- 	 
-  	  URI uri =ServletUriComponentsBuilder.fromCurrentRequest()
-  			  .buildAndExpand(edu.getEduId()).toUri();
+  	   
   	   
   	  
-  	  return ResponseEntity.created(uri).build();
+  	  return service.addEducation(education);
   	  
     }
     
@@ -159,12 +157,25 @@ public class JobSeekerController {
         	
     }
     
+    @DeleteMapping("/education/{id}")
+    public ResponseEntity<Object> deleteEducationDetailsById(@PathVariable("id") int id){
+    	
+    	 service.removeEducationDetails(id);
+    	return ResponseEntity.noContent().build();
+    }
+    
     @DeleteMapping("/exp/{id}")
     public ExperienceDetails deleteExperienceDetails(@PathVariable("id") int id) {
     	
     	return service.removeExperienceDetails(id);
     }
     
-    //@GetMapping("/applyForJob/{resumeId}")
+    @PutMapping("/education")
+    public ResponseEntity<Object> updateEducationDetails(@RequestBody  EducationDetails eduObj){
+    	
+    	service.modifyEducationDetails(eduObj);
+        return ResponseEntity.noContent().build();
+		
+    }
 
 }    

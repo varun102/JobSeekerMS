@@ -13,6 +13,7 @@ import com.ntl.topjobs.jobseekermicroservice.dao.EducationDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.ExperienceDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.ResumeDao;
 import com.ntl.topjobs.jobseekermicroservice.dao.SkillsDao;
+import com.ntl.topjobs.jobseekermicroservice.exceptions.EducationDetailsNotFoundException;
 import com.ntl.topjobs.jobseekermicroservice.exceptions.ExperienceDetailsNotFoundException;
 import com.ntl.topjobs.jobseekermicroservice.model.EducationDetails;
 import com.ntl.topjobs.jobseekermicroservice.model.ExperienceDetails;
@@ -180,6 +181,30 @@ public class JobSeekerService {
 		
 		expDao.deleteById(id);
 		return optional.get();
+	}
+
+	public EducationDetails removeEducationDetails(long id) {
+		Optional<EducationDetails> optional = eduDao.findById(id);
+		if(!optional.isPresent()) {
+			throw new EducationDetailsNotFoundException("id-"+id);
+		}
+		
+		eduDao.deleteById(id);
+		return optional.get();
+		
+	}
+
+	public EducationDetails modifyEducationDetails(EducationDetails eduObj) {
+		long eduid=eduObj.getEduId();
+		Optional<EducationDetails> optional = eduDao.findById(eduid);
+		if(!optional.isPresent()) {
+			throw new EducationDetailsNotFoundException("id-"+eduid);
+		}
+		
+		eduObj.setEduId(eduid);
+//		eduDao.deleteById(eduid);
+		eduDao.save(eduObj);
+		return eduObj;
 	}
 
 

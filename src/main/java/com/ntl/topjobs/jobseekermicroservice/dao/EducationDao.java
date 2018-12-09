@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.ntl.topjobs.jobseekermicroservice.model.EducationDetails;
 
 @Repository
-public interface EducationDao extends JpaRepository<EducationDetails,String>{
+public interface EducationDao extends JpaRepository<EducationDetails,Long>{
 
 	public List<EducationDetails> findByResumeId(String resumeId);
 }
