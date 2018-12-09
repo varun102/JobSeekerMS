@@ -75,7 +75,11 @@ public class JobSeekerService {
 	public Resume getResumeDetails(String id) {
 
 		//return resumeDao.findByseekerId(id);
-		return resumeDao.findById(id).get();
+		try {
+			return resumeDao.findById(id).get();				
+		}catch(Exception err) {
+			return null;
+		}
 	}
 	public Resume getResumeBySeeker(String id)throws SQLException {
 		return resumeDao.findByseekerId(id);
@@ -94,16 +98,22 @@ public class JobSeekerService {
 	}
 	
 	public List<Resume> getResumes(String arr){
-		String[] arrList=arr.split(",");
 
-		
-
-		System.out.println(arrList);
 		ArrayList<Resume> resumes=new ArrayList<Resume>();
-		for(String a:arrList) {
-			System.out.println(a);
-			resumes.add(resumeDao.findById(a).get());
+
+		try {
+			String[] arrList=arr.split(",");
+			System.out.println(arrList);
+			for(String a:arrList) {
+				System.out.println(a);
+				resumes.add(resumeDao.findById(a).get());
+			
+				}
+			}
+		catch(Exception err) {
+			System.out.println(err);
 		}
+		
 		return resumes;
 	}
 
